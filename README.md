@@ -120,3 +120,9 @@ Con el siguiente bucle, mostramos por pantalla los n elementos más similares al
             print(f"El texto es: {textos[coseno_list.index(elem)]}.")
             h = h+1
 ```
+
+## Función principal o main
+
+En la función principal tan sólo tenemos la llamada inicial a la función `resenyas()`, para introducir la base de documentos inicial, y la llamada a la función `menu(documentos)`, mediante la cual controlaremos todo el programa.
+
+Para finalizar, el programa nos mostrará un mensaje de despedida.
