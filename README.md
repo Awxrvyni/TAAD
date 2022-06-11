@@ -2,7 +2,7 @@
 
 El objetivo de este proyecto es implementar un sistema de recomendación basado en contenido. Para ello se ha realizado un programa en python, el cual usa las siguientes funciones, que paso a detallar.
 
-
+Todas las funciones excepto `resenyas()` requieren como argumento de entrada la variable que contiene la base de datos de reseñas.
 
 ## Función `menu(documentos)`
 
@@ -16,9 +16,6 @@ La usaremos para que el usuario seleccione de entre las diferentes opciones disp
 6. Salir.
 
 Al introducir el número perteneciente a la opción deseada, se llamará a la función correspondiente.
-
-Esta función requiere como argumento de entrada la variable que contiene la base de datos de reseñas.
-
 
 
 ## Función `resenyas()`
@@ -45,7 +42,6 @@ Por último, hallamos la matriz de valores tf. Estos valores no nos los proporci
     array_tf = np.multiply(array_tfidf, array_idf)
     tf = pd.DataFrame(array_tf, columns=vectorizer.get_feature_names(), index=tfidf.index)
 ```
-Esta función requiere como argumento de entrada la variable que contiene la base de datos de reseñas.
 
 
 ## Función `hallar_valores_tfidf(fuente)`
@@ -69,4 +65,28 @@ Tan sólo nos resta eliminar las palabras que no aparezcan en el documento. Crea
 
     final.drop(lista, axis=1, inplace=True)
 ````
+Finalmente, trasponemos el dataframe para una mejor visualización y lo imprimimos por pantalla.
 
+
+## Función `visualizar_similitud(documentos)`
+
+Función que nos permite ver la similitud entre los diferentes documentos de la base de datos de reseñas. Llamamos a la función `hallar_valores_tfidf(fuente)`, que nos devuelve los valores tfidf de los documentos. Luego, creamos un dataframe donde almacenamos los valores de similitud. A continuación calculamos el vector de similitud entre cada par de documentos y lo almacenamos en el dataframe.
+````
+    for elem in range(tfidf.shape[0]):
+        variable = cosine_similarity(tfidf[elem:elem + 1], tfidf)
+        variable2 = pd.DataFrame(variable)
+        df = df.append(variable2)
+````
+Por último, renombramos los nombres de filas y columnas para una mejor visualización e imprimimos el dataframe por pantalla.
+````
+    for elem in df.columns:
+        df.rename(columns={elem: ('Doc ' + str(int(elem) + 1))}, inplace=True)
+    df.set_axis(df.columns, axis='index', inplace=True)
+
+    print(df)
+````
+
+
+## Función `recomendacion(textos)`
+
+Función que nos recomienda un documento de entre los diferentes almacenados en base a lo similar que sea con otro documento diferente que le introduzcamos.
